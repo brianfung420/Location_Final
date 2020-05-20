@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Location_Final</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_dice">Random</string>
+    <string name="nav_map">Map</string>
+    <string name="nav_restaurant">Restaurant</string>
+    <string name="title_activity_maps">Map</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

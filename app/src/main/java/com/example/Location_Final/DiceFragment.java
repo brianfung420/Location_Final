@@ -43,7 +43,7 @@ public class DiceFragment extends Fragment {
     double latitude = 120.646538;
     double longitude = 24.178843;
 
-    private ArrayList<String> mData = new ArrayList<>();
+    private HashMap<String,String> mData = new HashMap<>();
     private RecyclerView recyclerView;
     private diceAdapter adapter;
 
@@ -61,8 +61,27 @@ public class DiceFragment extends Fragment {
 
         if(mData.isEmpty()) {
             Log.d("OnCreate","Is null");
-            mData.add("Location: " + "127" + "\nDescr: " + "咖喱飯");
-            mData.add("Location: " + "七味" + "\nDescr: " + "便當");
+            mData.put("name"+"0","127");
+            mData.put("descr"+"0","咖喱飯");
+
+            mData.put("name"+"1","七味");
+            mData.put("descr"+"1","便當");
+
+            mData.put("name"+"2","123");
+            mData.put("descr"+"2","便當");
+
+            mData.put("name"+"3","456");
+            mData.put("descr"+"3","便當");
+
+            mData.put("name"+"4","789");
+            mData.put("descr"+"4","便當");
+
+            mData.put("name"+"5","159");
+            mData.put("descr"+"5","便當");
+
+            mData.put("name"+"6","753");
+            mData.put("descr"+"6","便當");
+
         }
 
         // 將資料交給adapter
@@ -199,7 +218,10 @@ public class DiceFragment extends Fragment {
                 // Getting vicinity
                 String reference = hmPlace.get("reference");
 
-                mData.add("Location: "+name + "\nDescr: "+vicinity);
+                mData.put("name",name);
+                mData.put("Descr",vicinity);
+                mData.put("lat",Double.toString(lat));
+                mData.put("lng",Double.toString(lng));
 
                 Log.d("Map", "place: " + name  + ",vicinity: " + vicinity +",reference: " + reference + ",lat: " + lat + ",lng: " + lng);
 

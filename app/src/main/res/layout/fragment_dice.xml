@@ -8,4 +8,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/Dice_RecyclerView"/>
 
+    <Button
+        android:id="@+id/btn_diceRandom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/Random"
+        android:layout_alignParentBottom="true"/>
+
 </RelativeLayout>

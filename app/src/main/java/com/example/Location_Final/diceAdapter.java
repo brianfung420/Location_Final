@@ -29,7 +29,6 @@ class diceAdapter extends RecyclerView.Adapter<diceAdapter.ViewHolder> {
             super(itemView);
             nameItem = (TextView) itemView.findViewById(R.id.dice_name_Item);
             descrItem = (TextView) itemView.findViewById(R.id.dice_descr_Item);
-
         }
     }
 
@@ -43,17 +42,15 @@ class diceAdapter extends RecyclerView.Adapter<diceAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // 設置txtItem要顯示的內容
-        for (int i = 0;i<mData.size()/2;i++){
-            holder.nameItem.setText(mData.get("name"+i));
-            holder.descrItem.setText(mData.get("descr"+i));
-            Log.d("RecycleView","mes:"+mData.get("name"+i)+mData.get("descr"+i));
-        }
-        Log.d("RecycleView","HashMap Length:"+mData.size());
+        holder.nameItem.setText(mData.get("name"+position));
+        holder.descrItem.setText(mData.get("descr"+position));
+        Log.d("RecycleView","Now Item:"+position+" Name:"+mData.get("name"+position)+" Descr:"+mData.get("descr"+position));
     }
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        //決定了RecyclerView的長度
+        return mData.size()/2;
     }
+
 }

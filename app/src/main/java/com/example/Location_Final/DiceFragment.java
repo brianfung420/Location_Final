@@ -1,11 +1,13 @@
 package com.example.Location_Final;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +31,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
+
+import static java.lang.Math.abs;
 
 public class DiceFragment extends Fragment {
 
@@ -38,6 +43,7 @@ public class DiceFragment extends Fragment {
     private HashMap<String,String> mData = new HashMap<>();
     private RecyclerView recyclerView;
     private diceAdapter adapter;
+    private Button btn_dice;
 
     @Nullable
     @Override
@@ -47,6 +53,8 @@ public class DiceFragment extends Fragment {
         StringBuilder sbValue = new StringBuilder(sbMethod());
         PlacesTask placesTask = new PlacesTask();
         placesTask.execute(sbValue.toString());
+
+        btn_dice = RootView.findViewById(R.id.btn_diceRandom);
 
         recyclerView = RootView.findViewById(R.id.Dice_RecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -80,6 +88,15 @@ public class DiceFragment extends Fragment {
         adapter = new diceAdapter(mData);
         // 設置adapter給recycler_view
         recyclerView.setAdapter(adapter);
+
+        btn_dice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Random random = new Random();
+                int count = random.nextInt((mData.size()/2));
+                Log.d("btn_dice","Clicked,Random Number:"+count+" ,mData.size():"+mData.size());
+            }
+        });
 
         return RootView;
     }

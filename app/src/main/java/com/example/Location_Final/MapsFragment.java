@@ -57,8 +57,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         // Add a marker in Sydney and move the camera
         LatLng FengChia = new LatLng(24.178843,120.646538);
         BitmapDescriptor descriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);    //設置標記點
-        mMap.addMarker(new MarkerOptions().position(FengChia).title("逢甲大學").icon(descriptor).snippet("逢甲大學的地標\n我是大輝 你好\n我來自香港"));                  //.icon 加入標記點資訊
+        mMap.addMarker(new MarkerOptions().position(FengChia).title("逢甲大學").icon(descriptor).snippet("逢甲大學的地標"));                  //.icon 加入標記點資訊
         mMap.moveCamera(CameraUpdateFactory.newLatLng(FengChia));
+
 
         CircleOptions circleOptions = new CircleOptions().center(FengChia).radius(1000);    //設置圓的資料
         mMap.addCircle(circleOptions);                          //畫圓圈

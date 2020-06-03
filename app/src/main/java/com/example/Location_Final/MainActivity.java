@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        loadFragment(new HomeFragment());                                       //讀取Fragment
+        loadFragment(new MapsFragment());                                       //讀取Fragment
 
         //getting bottom navigation view and attaching the listener
         BottomNavigationView navigation = findViewById(R.id.navigation);        //設置底部的bar
@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         smf = SupportMapFragment.newInstance();
         smf.getMapAsync(this);
     }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {           //選取bar的功能
@@ -43,9 +42,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
 
         switch (item.getItemId()) {
-            case R.id.nav_home:
-                fragment = new HomeFragment();                          //要改主頁的内容去該XXXXFragment改程式碼
-                break;
 
             case R.id.nav_restaurant:
                 fragment = new RestartantFragment();                    //要改主頁的内容去該XXXXFragment改程式碼
@@ -79,4 +75,5 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public void onMapReady(GoogleMap googleMap) {
 
     }
+
 }

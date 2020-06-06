@@ -19,7 +19,7 @@ import java.util.List;
 
 public class LoadMapsInfo {
 
-    HashMap<String,String> mData = new HashMap<>();
+    List<HashMap<String,String>> mData = null;
     double latitude,longitude;
 
     LoadMapsInfo(){
@@ -33,7 +33,7 @@ public class LoadMapsInfo {
     }
 
     //執行即刻獲取API的結果並回傳固定資訊
-    public HashMap<String,String> excute_PlacesTask(){
+    public List<HashMap<String,String>> excute_PlacesTask(){
         StringBuilder sbValue = new StringBuilder(sbMethod());
         PlacesTask placesTask = new PlacesTask();
         placesTask.execute(sbValue.toString());
@@ -43,10 +43,10 @@ public class LoadMapsInfo {
     public StringBuilder sbMethod() {
         StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         sb.append("location=" + longitude + "," + latitude);
-        sb.append("&radius=5000");
+        sb.append("&radius=1000");
         sb.append("&types=" + "restaurant");
         sb.append("&sensor=true");
-        sb.append("&key=AIzaSyBwp6thVb9nK1EA9X57XhU9lZDCAN1-NqU");
+        sb.append("&key=");
         Log.d("Map", "api: " + sb.toString());
 
         return sb;
@@ -143,7 +143,8 @@ public class LoadMapsInfo {
         protected void onPostExecute(List<HashMap<String, String>> list) {
 
             Log.d("Map", "list size: " + list.size());
-
+            mData = list;
+            /*
             for (int i = 0; i < list.size(); i++) {
                 // Creating a marker
                 //MarkerOptions markerOptions = new MarkerOptions();
@@ -167,11 +168,11 @@ public class LoadMapsInfo {
                 String reference = hmPlace.get("reference");
 
                 mData.put("name",name);
-                mData.put("Descr",vicinity);
                 mData.put("lat",Double.toString(lat));
                 mData.put("lng",Double.toString(lng));
 
                 Log.d("Map", "place: " + name  + ",vicinity: " + vicinity +",reference: " + reference + ",lat: " + lat + ",lng: " + lng);
+                */
 
                 //LatLng latLng = new LatLng(lat, lng);
 
@@ -184,8 +185,6 @@ public class LoadMapsInfo {
 
                 // Placing a marker on the touched position
                 //Marker m = mGoogleMap.addMarker(markerOptions);
-
-            }
         }
     }
 
@@ -234,38 +233,38 @@ public class LoadMapsInfo {
 
             HashMap<String, String> place = new HashMap<String, String>();
             String placeName = "-NA-";
-            String vicinity = "-NA-";
             String latitude = "";
             String longitude = "";
-            String reference = "";
 
             try {
-                Log.d("Hash","First");
+                //Log.d("Hash","First");
                 // Extracting Place name, if available
                 if (!jPlace.isNull("name")) {
                     placeName = jPlace.getString("name");
                     //Log.d("Hash","Name:"+placeName);
                 }
 
-                // Extracting Place Vicinity, if available
-                if (!jPlace.isNull("vicinity")) {
-                    vicinity = jPlace.getString("vicinity");
-                }
-
                 latitude = jPlace.getJSONObject("geometry").getJSONObject("location").getString("lat");
                 longitude = jPlace.getJSONObject("geometry").getJSONObject("location").getString("lng");
-                reference = jPlace.getString("reference");
 
                 place.put("place_name", placeName);
-                place.put("vicinity", vicinity);
                 place.put("lat", latitude);
-                place.put("lng", longitude);
-                place.put("reference", reference);
+                place.put("long", longitude);
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.d("Hash","Name: "+place.get("place_name") + "reference: "+place.get("reference"));
+            String tt = "temp = new HashMap<String,String>();";
+            String name = "temp.put(\"name\",";
+            String lat = "temp.put(\"lat\",";
+            String lng = "temp.put(\"long\",";
+            String add = "mData.add(number_,temp);\n";
+            String tail = ");\n";
+            Log.d("Hash", "\n"+tt +"\n"+
+                                    name + "\"" + placeName + "\"" + tail +
+                                    lat + "\""+latitude +"\"" + tail +
+                                    lng + "\"" +longitude + "\"" + tail+add);
+
             return place;
         }
     }

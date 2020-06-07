@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -19,17 +20,19 @@ import java.util.List;
 
 public class LoadMapsInfo {
 
-    List<HashMap<String,String>> mData = null;
+    private List<HashMap<String,String>> mData;
     double latitude,longitude;
 
     LoadMapsInfo(){
         latitude = 120.646538;
         longitude = 24.178843;
+        mData = new ArrayList<HashMap<String,String>>();
     }
 
     LoadMapsInfo(double latitude,double longitude){
         this.latitude = latitude;
         this.longitude = longitude;
+        mData = new ArrayList<HashMap<String,String>>();
     }
 
     //執行即刻獲取API的結果並回傳固定資訊
@@ -37,6 +40,10 @@ public class LoadMapsInfo {
         StringBuilder sbValue = new StringBuilder(sbMethod());
         PlacesTask placesTask = new PlacesTask();
         placesTask.execute(sbValue.toString());
+        if(mData.isEmpty()){
+            Log.d("LoadMap","mData Is null");
+            mData = new ArrayList<HashMap<String,String>>();
+        }
         return mData;
     }
 
@@ -143,7 +150,6 @@ public class LoadMapsInfo {
         protected void onPostExecute(List<HashMap<String, String>> list) {
 
             Log.d("Map", "list size: " + list.size());
-            mData = list;
             /*
             for (int i = 0; i < list.size(); i++) {
                 // Creating a marker
@@ -162,17 +168,13 @@ public class LoadMapsInfo {
                 String name = hmPlace.get("place_name");
 
                 // Getting vicinity
-                String vicinity = hmPlace.get("vicinity");
+                //String vicinity = hmPlace.get("vicinity");
 
                 // Getting vicinity
-                String reference = hmPlace.get("reference");
+                //String reference = hmPlace.get("reference");
 
-                mData.put("name",name);
-                mData.put("lat",Double.toString(lat));
-                mData.put("lng",Double.toString(lng));
+                Log.d("Map", "place: " + name + ",lat: " + lat + ",lng: " + lng);
 
-                Log.d("Map", "place: " + name  + ",vicinity: " + vicinity +",reference: " + reference + ",lat: " + lat + ",lng: " + lng);
-                */
 
                 //LatLng latLng = new LatLng(lat, lng);
 
@@ -185,87 +187,96 @@ public class LoadMapsInfo {
 
                 // Placing a marker on the touched position
                 //Marker m = mGoogleMap.addMarker(markerOptions);
-        }
-    }
-
-    private class Place_JSON {
-
-        /**
-         * Receives a JSONObject and returns a list
-         */
-        public List<HashMap<String, String>> parse(JSONObject jObject) {
-
-            JSONArray jPlaces = null;
-            try {
-                /** Retrieves all the elements in the 'places' array */
-                jPlaces = jObject.getJSONArray("results");
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-            /** Invoking getPlaces with the array of json object
-             * where each json object represent a place
-             */
-            return getPlaces(jPlaces);
+            */
         }
 
-        private List<HashMap<String, String>> getPlaces(JSONArray jPlaces) {
-            int placesCount = jPlaces.length();
-            List<HashMap<String, String>> placesList = new ArrayList<HashMap<String, String>>();
-            HashMap<String, String> place = null;
+        private class Place_JSON {
 
-            /** Taking each place, parses and adds to list object */
-            for (int i = 0; i < placesCount; i++) {
+            /**
+             * Receives a JSONObject and returns a list
+             */
+            public List<HashMap<String, String>> parse(JSONObject jObject) {
+
+                JSONArray jPlaces = null;
                 try {
-                    /** Call getPlace with place JSON object to parse the place */
-                    place = getPlace((JSONObject) jPlaces.get(i));
-                    placesList.add(place);
+                    /** Retrieves all the elements in the 'places' array */
+                    jPlaces = jObject.getJSONArray("results");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                /** Invoking getPlaces with the array of json object
+                 * where each json object represent a place
+                 */
+                return getPlaces(jPlaces);
             }
-            return placesList;
-        }
 
-        /**
-         * Parsing the Place JSON object
-         */
-        private HashMap<String, String> getPlace(JSONObject jPlace) {
+            private List<HashMap<String, String>> getPlaces(JSONArray jPlaces) {
+                int placesCount = jPlaces.length();
+                List<HashMap<String, String>> placesList = new ArrayList<HashMap<String, String>>();
+                HashMap<String, String> place = null;
 
-            HashMap<String, String> place = new HashMap<String, String>();
-            String placeName = "-NA-";
-            String latitude = "";
-            String longitude = "";
-
-            try {
-                //Log.d("Hash","First");
-                // Extracting Place name, if available
-                if (!jPlace.isNull("name")) {
-                    placeName = jPlace.getString("name");
-                    //Log.d("Hash","Name:"+placeName);
+                /** Taking each place, parses and adds to list object */
+                for (int i = 0; i < placesCount; i++) {
+                    try {
+                        /** Call getPlace with place JSON object to parse the place */
+                        place = getPlace((JSONObject) jPlaces.get(i));
+                        if(place.isEmpty()){
+                            Log.d("Hash_getPlace","Is null");
+                        }
+                        placesList.add(i,place);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-
-                latitude = jPlace.getJSONObject("geometry").getJSONObject("location").getString("lat");
-                longitude = jPlace.getJSONObject("geometry").getJSONObject("location").getString("lng");
-
-                place.put("place_name", placeName);
-                place.put("lat", latitude);
-                place.put("long", longitude);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
+                if(!placesList.isEmpty()){
+                    Log.d("Hash_getPlaces","Not null, copy to mData");
+                    mData = placesList;
+                }
+                return placesList;
             }
-            String tt = "temp = new HashMap<String,String>();";
-            String name = "temp.put(\"name\",";
-            String lat = "temp.put(\"lat\",";
-            String lng = "temp.put(\"long\",";
-            String add = "mData.add(number_,temp);\n";
-            String tail = ");\n";
-            Log.d("Hash", "\n"+tt +"\n"+
-                                    name + "\"" + placeName + "\"" + tail +
-                                    lat + "\""+latitude +"\"" + tail +
-                                    lng + "\"" +longitude + "\"" + tail+add);
 
-            return place;
+            /**
+             * Parsing the Place JSON object
+             */
+            private HashMap<String, String> getPlace(JSONObject jPlace) {
+
+                HashMap<String, String> place = new HashMap<String, String>();
+                String placeName = "-NA-";
+                String latitude = "";
+                String longitude = "";
+
+                try {
+                    //Log.d("Hash","First");
+                    // Extracting Place name, if available
+                    if (!jPlace.isNull("name")) {
+                        placeName = jPlace.getString("name");
+                        //Log.d("Hash","Name:"+placeName);
+                    }
+
+                    latitude = jPlace.getJSONObject("geometry").getJSONObject("location").getString("lat");
+                    longitude = jPlace.getJSONObject("geometry").getJSONObject("location").getString("lng");
+
+                    place.put("place_name", placeName);
+                    place.put("lat", latitude);
+                    place.put("long", longitude);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String tt = "temp = new HashMap<String,String>();";
+                String name = "temp.put(\"name\",";
+                String lat = "temp.put(\"lat\",";
+                String lng = "temp.put(\"long\",";
+                String add = "mData.add(number_,temp);\n";
+                String tail = ");\n";
+                Log.d("Hash", "\n" + tt + "\n" +
+                        name + "\"" + placeName + "\"" + tail +
+                        lat + "\"" + latitude + "\"" + tail +
+                        lng + "\"" + longitude + "\"" + tail + add);
+
+                return place;
+            }
         }
     }
 

@@ -43,7 +43,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         restartant_info = loadMapsInfo.excute_PlacesTask();
 
-        if(restartant_info==null){
+        if(restartant_info.isEmpty()){
             Log.d("OnCreate","Is null");
             restartant_info  = new ArrayList<HashMap<String, String>>();
             HashMap<String,String> temp = new HashMap<String,String>();

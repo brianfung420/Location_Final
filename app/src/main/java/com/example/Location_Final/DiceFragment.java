@@ -56,10 +56,10 @@ public class DiceFragment extends Fragment {
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        LoadMapsInfo loadMapsInfo = new LoadMapsInfo();
+        LoadMapsInfo loadMapsInfo = new LoadMapsInfo(latitude,longitude);
         mData = loadMapsInfo.excute_PlacesTask();
 
-        if(mData==null) {
+        if(mData.isEmpty()) {
             mData = new ArrayList<HashMap<String, String>>();
             Log.d("OnCreate","Is null");
             HashMap<String,String> temp = new HashMap<>();

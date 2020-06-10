@@ -215,7 +215,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         CircleOptions circleOptions = new CircleOptions().center(FengChia).radius(1000);    //設置圓的資料
         mMap.addCircle(circleOptions);                          //畫圓圈
-
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);      //右下角的放大縮小功能
         mMap.getUiSettings().setCompassEnabled(true);           //左上角的指南針，要兩指旋轉才會出現
         mMap.getUiSettings().setMapToolbarEnabled(true);        //右下角的導覽及開啓 Google Map功能

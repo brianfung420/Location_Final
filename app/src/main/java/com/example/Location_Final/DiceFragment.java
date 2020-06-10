@@ -1,5 +1,8 @@
 package com.example.Location_Final;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,7 +14,9 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +39,7 @@ import java.util.List;
 import java.util.Random;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.random;
 
 public class DiceFragment extends Fragment {
 
@@ -43,7 +49,10 @@ public class DiceFragment extends Fragment {
     private List<HashMap<String,String>> mData;
     private RecyclerView recyclerView;
     private diceAdapter adapter;
+    private result_dialog adapter2;
     private Button btn_dice;
+    private static int randomcount = 0;
+    private static int rannum = 0;
 
     @Nullable
     @Override
@@ -56,14 +65,13 @@ public class DiceFragment extends Fragment {
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        LoadMapsInfo loadMapsInfo = new LoadMapsInfo(latitude,longitude);
+        final LoadMapsInfo loadMapsInfo = new LoadMapsInfo(latitude,longitude);
         mData = loadMapsInfo.excute_PlacesTask();
 
         if(mData.isEmpty()) {
             mData = new ArrayList<HashMap<String, String>>();
             Log.d("OnCreate","Is null");
             HashMap<String,String> temp = new HashMap<>();
-
             temp.put("name","Little Tibet");
             temp.put("lat","24.175309");
             temp.put("long","120.64681");
@@ -200,13 +208,29 @@ public class DiceFragment extends Fragment {
         btn_dice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Random random = new Random();
-                int count = random.nextInt((mData.size()));
-                Log.d("btn_dice","Clicked,Random Number:"+count+" ,mData.size():"+mData.size());
+                if(randomcount==0)
+                {
+                    randomcount++;
+                    Random random = new Random();
+                    rannum = random.nextInt((mData.size()));
+                    Log.d("btn_dice","Clicked,Random Number:" + rannum);
+                }
+                HashMap<String,String> temp = mData.get(rannum);
+                Double lat = Double.parseDouble(temp.get("lat"));
+                Double lng = Double.parseDouble(temp.get("long"));
+                LatLng restartant = new LatLng(lat,lng);
+                String name = temp.get("name");
+
+                Log.d("MapsFragmet","i:"+rannum+" name:"+name + " lat:"+lat +" lng:"+lng);
+                result_dialog dialog = new result_dialog(restartant,name);
+                dialog.show(getFragmentManager(), "dialog_fragment");
+                Log.d("MapsFragmet","Showing result on dialog");
+
             }
         });
 
         return RootView;
     }
+
 
 }

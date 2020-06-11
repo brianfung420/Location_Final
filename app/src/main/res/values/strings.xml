@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Location_Final</string>
+    <string name="app_name">Plan R</string>
     <string name="nav_home">Home</string>
     <string name="nav_dice">Random</string>
     <string name="nav_map">Map</string>
@@ -12,4 +12,5 @@
     <string name="dialog_fire_missiles" />
     <string name="cancel" />
     <string name="fire" />
+    <string name="frag_rest">增加喜歡的餐廳</string>
 </resources>

@@ -6,27 +6,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-class diceAdapter extends RecyclerView.Adapter<diceAdapter.ViewHolder> {
+public class restAdapter extends RecyclerView.Adapter<restAdapter.ViewHolder> {
 
-    private List<HashMap<String,String>> mData;
+    private ArrayList<HashMap<String,String>> mData;
 
-    diceAdapter(List<HashMap<String,String>> data) {
-        mData = data;
+    restAdapter(ArrayList<HashMap<String,String>> data) {
+        this.mData = data;
+        Log.d("restAda","data size:"+mData.size());
     }
 
     // 建立ViewHolder
     class ViewHolder extends RecyclerView.ViewHolder{
-        // 宣告元件
-        public TextView nameItem;
-
+        TextView nameItem;
+        TextView descItem;
         ViewHolder(View itemView) {
             super(itemView);
-            nameItem = (TextView) itemView.findViewById(R.id.dice_name_Item);
+            nameItem = (TextView) itemView.findViewById(R.id.rest_item_name);
+            descItem = (TextView) itemView.findViewById(R.id.rest_item_desc);
         }
     }
 
@@ -34,15 +36,17 @@ class diceAdapter extends RecyclerView.Adapter<diceAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // 連結項目布局檔list_item
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.dice_list_item, parent, false);
+                .inflate(R.layout.rest_list_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         HashMap<String,String> temp = mData.get(position);
+        Log.d("restAda","data size:"+getItemCount() + " position:"+position);
         holder.nameItem.setText(temp.get("name"));
-        Log.d("RecycleView","Now Item:"+position+" Name:"+temp.get("name"));
+        holder.descItem.setText(temp.get("desc"));
+        Log.d("RecycleView","Now Item:"+position+" Name:"+temp.get("name")+" Desc:"+temp.get("desc"));
     }
 
     @Override

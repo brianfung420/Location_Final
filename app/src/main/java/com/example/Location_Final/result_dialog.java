@@ -35,10 +35,6 @@ public class result_dialog extends DialogFragment{
         this.restaurant_name = name;
     }
 
-    
-
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,7 +64,7 @@ public class result_dialog extends DialogFragment{
         });
         return view;
     }
-    
+
     public void launchMap(){
         //String uriString = String.format("google.navigation:q=%f,%f", restaurant_coor.latitude,restaurant_coor.longitude);
         String uriString = String.format("geo:?q=%f,%f", restaurant_coor.latitude,restaurant_coor.longitude);
@@ -79,6 +75,5 @@ public class result_dialog extends DialogFragment{
         startActivity(intent);
 
     }
-
 
 }

@@ -4,6 +4,52 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="20sp"
+        android:layout_marginTop="20sp"
+        android:layout_marginEnd="20sp">
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="20sp"
+            android:text="餐廳:"/>
+
+        <EditText
+            android:id="@+id/edit_rest"
+            android:layout_height="wrap_content"
+            android:hint="請輸入餐廳名稱"
+            android:layout_weight="1"
+            android:layout_width="0dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="20sp"
+        android:layout_marginTop="20sp"
+        android:layout_marginEnd="20sp">
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="20sp"
+            android:text="評價:"/>
+
+        <EditText
+            android:id="@+id/edit_desc"
+            android:layout_height="wrap_content"
+            android:hint="請輸入餐廳評價"
+            android:layout_weight="1"
+            android:layout_width="0dp" />
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="0dp"
